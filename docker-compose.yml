@@ -1,1 +1,22 @@
-# Your Solution
+version: '3.9'
+
+services:
+  book_catalog:
+    build:
+      context: ./book_catalog
+    image: book_catalog
+    environment:
+      - DATABASE_URL=postgresql://sit722_task4_km4b_user:KB31SkKANSigdNw8gJmGFDl0hSBdrPPp@dpg-crp83tlds78s73d5qa1g-a.oregon-postgres.render.com/sit722_task4_km4b
+
+    ports:
+      - "8000:8000"
+
+  inventory_management:
+    build:
+      context: ./inventory_management
+    image: inventory_management
+    environment:
+      - DATABASE_URL=postgresql://sit722_task4_km4b_user:KB31SkKANSigdNw8gJmGFDl0hSBdrPPp@dpg-crp83tlds78s73d5qa1g-a.oregon-postgres.render.com/sit722_task4_km4b
+
+    ports:
+      - "7000:7000"

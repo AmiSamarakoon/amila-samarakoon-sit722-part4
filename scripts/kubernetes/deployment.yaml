@@ -1,1 +1,77 @@
-# Your Solution
+# Book Catalog Deployment with LoadBalancer Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-catalog-deployment
+  labels:
+    app: book-catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-catalog
+  template:
+    metadata:
+      labels:
+        app: book-catalog
+    spec:
+      containers:
+        - name: book-catalog
+          image: sit722task4ami.azurecr.io/book_catalog:latest ###
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://sit722_task4_km4b_user:KB31SkKANSigdNw8gJmGFDl0hSBdrPPp@dpg-crp83tlds78s73d5qa1g-a.oregon-postgres.render.com/sit722_task4_km4b"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-catalog-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: book-catalog
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+# Inventory Management Deployment with LoadBalancer Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-management-deployment
+  labels:
+    app: inventory-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-management
+  template:
+    metadata:
+      labels:
+        app: inventory-management
+    spec:
+      containers:
+        - name: inventory-management
+          image: sit722task4ami.azurecr.io/inventory_management:latest ####
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://sit722_task4_km4b_user:KB31SkKANSigdNw8gJmGFDl0hSBdrPPp@dpg-crp83tlds78s73d5qa1g-a.oregon-postgres.render.com/sit722_task4_km4b"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-management-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: inventory-management
+  ports:
+    - port: 80
+      targetPort: 7000
